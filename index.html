@@ -1,331 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=League+Spartan:wght@400;600;700;800&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BySyuan | Photography Portfolio</title>
 
-/* ==========================
-   Design Tokens
-========================== */
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-:root {
-    /* Colours */
-    --color-background: #111111;
-    --color-primary-text: #e4f0f6;
-    --color-accent: #ac4606;
-    --color-button-text: #ffffff;
-    --color-card-background: #decfc2;
-    --color-footer-background: #111111;
-    --color-outline-border: #4e535e;
-    --color-divider: rgba(255, 255, 255, 0.06);
+    <header class="site-header">
+        <nav class="main-navigation">
+            <ul>
+                <li>#home</li>
+                <li>#about</li>
+                <li>#menu</li>
+                <li>#gallery</li>
+                <li>#contact</li>
+            </ul>
+        </nav>
+    </header>
 
-    /* Layout */
-    --container-width: 1440px;
-    --container-padding-desktop: 120px;
-    --container-padding-mobile: 50px;
-    --section-padding: 80px;
-    --card-gap: 48px;
+    <main class="main-content">
 
-    /* Navigation */
-    --nav-height-desktop: 81px;
-    --nav-height-mobile: 112px;
+        <section class="hero-section">
+            <h1>Capturing Timeless Moments with BySyuan</h1>
 
-    /* Buttons */
-    --button-radius: 4px;
+            <p>
+                Creative photography that tells stories, preserves memories,
+                and showcases life's most meaningful moments.
+            </p>
 
-    /* Typography */
-    --font-heading: "League Spartan", sans-serif;
-    --font-body: "League Spartan", sans-serif;
-    --font-ui: "Inter", sans-serif;
-}
+            #galleryView Portfolio</a>
+        </section>
 
-/* ==========================
-   Reset
-========================== */
+        <section class="features-section">
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+            <article class="feature-card">
+                <h2>Portrait Photography</h2>
+                <p>
+                    Professional portrait sessions designed to capture
+                    personality, emotion, and authenticity.
+                </p>
+            </article>
 
-img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
+            <article class="feature-card">
+                <h2>Event Coverage</h2>
+                <p>
+                    Comprehensive photography services for weddings,
+                    celebrations, and special occasions.
+                </p>
+            </article>
 
-body {
-    background-color: var(--color-background);
-    color: var(--color-primary-text);
-    font-family: var(--font-body);
-}
+            <article class="feature-card">
+                <h2>Creative Storytelling</h2>
+                <p>
+                    Artistic imagery crafted to create memorable visual
+                    narratives and lasting impressions.
+                </p>
+            </article>
 
-/* ==========================
-   Global Layout
-========================== */
+        </section>
 
-.main-content,
-.site-header,
-.site-footer {
-    width: 100%;
-}
+        <section class="gallery-section">
 
-.site-header,
-.main-content,
-.site-footer {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding-left: var(--container-padding-desktop);
-    padding-right: var(--container-padding-desktop);
-}
+            <figure class="gallery-item">
+                <img src="placeholder-image-1.jpg" alt="Gallery image placeholder">
+            </figure>
 
-/* ==========================
-   Navigation
-========================== */
+            <figure class="gallery-item">
+                <img src="placeholder-image-2.jpg" alt="Gallery image placeholder">
+            </figure>
 
-.site-header {
-    height: var(--nav-height-desktop);
-}
+            <figure class="gallery-item">
+                <img src="placeholder-image-3.jpg" alt="Gallery image placeholder">
+            </figure>
 
-.main-navigation {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
+            <figure class="gallery-item">
+                4.jpg" alt="Gallery image placeholder">
+            </figure>
 
-.main-navigation ul {
-    list-style: none;
-    display: flex;
-    gap: 32px;
-}
+            <figure class="gallery-item">
+                <img src="placeholder-image-5.jpg" alt="Gallery image placeholder">
+            </figure>
 
-.main-navigation a,
-.main-navigation li {
-    font-family: var(--font-heading);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    color: var(--color-primary-text);
-    text-decoration: none;
-}
+            <figure class="gallery-item">
+                placeholder-image-6.jpg" alt="Gallery image placeholder">
+            </figure>
 
-/* ==========================
-   Sections
-========================== */
+        </section>
 
-.hero-section,
-.features-section,
-.gallery-section {
-    padding-top: var(--section-padding);
-    padding-bottom: var(--section-padding);
-}
+    </main>
 
-/* ==========================
-   Hero
-========================== */
+    <footer class="site-footer">
 
-.hero-section {
-    text-align: center;
-}
+        <p>&copy; 2026 BySyuan. All rights reserved.</p>
 
-.hero-section h1 {
-    font-family: var(--font-heading);
-    font-size: 64px;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 24px;
-}
+        <nav class="footer-navigation">
+            <ul>
+                <li>#privacy</li>
+                <li>#terms</li>
+                <li>#contact</li>
+            </ul>
+        </nav>
 
-.hero-section p {
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 28px;
-    max-width: 700px;
-    margin: 0 auto 32px;
-}
+        <div class="social-media">
+            #
+            #>
+            #
+        </div>
 
-/* ==========================
-   Buttons
-========================== */
+    </footer>
 
-.hero-section a,
-.cta-button {
-    display: inline-block;
-    text-decoration: none;
-    background-color: var(--color-accent);
-    color: var(--color-button-text);
-    font-family: var(--font-ui);
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.46px;
-    padding: 8px 16px;
-    border-radius: var(--button-radius);
-}
-
-.contact-button-outline {
-    display: inline-block;
-    text-decoration: none;
-    font-family: var(--font-ui);
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.46px;
-    color: var(--color-primary-text);
-    border: 1px solid var(--color-outline-border);
-    border-radius: 4px;
-    padding: 15px 50px;
-    background: transparent;
-}
-
-/* ==========================
-   Features Cards
-========================== */
-
-.features-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--card-gap);
-}
-
-.feature-card {
-    background-color: var(--color-card-background);
-    padding: 0;
-}
-
-.feature-card h2 {
-    font-family: var(--font-heading);
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--color-background);
-    margin-bottom: 16px;
-}
-
-.feature-card p {
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 28px;
-    color: var(--color-background);
-}
-
-/* ==========================
-   Subheading Style
-========================== */
-
-h3 {
-    font-family: var(--font-heading);
-    font-size: 22px;
-    font-weight: 600;
-}
-
-/* ==========================
-   Gallery
-========================== */
-
-.gallery-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--card-gap);
-}
-
-.gallery-item {
-    background-color: var(--color-card-background);
-    overflow: hidden;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* ==========================
-   FAQ Accordion
-========================== */
-
-.faq-item {
-    border-bottom: 1px solid var(--color-divider);
-}
-
-.faq-question {
-    padding: 20px 15px;
-    cursor: pointer;
-    font-family: var(--font-ui);
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.faq-answer {
-    padding: 20px 15px;
-    font-family: var(--font-ui);
-    font-size: 16px;
-    line-height: 24px;
-}
-
-/* ==========================
-   Footer
-========================== */
-
-.site-footer {
-    background-color: var(--color-footer-background);
-    border-top: 1px solid var(--color-divider);
-    padding-top: 40px;
-    padding-bottom: 40px;
-}
-
-.site-footer p {
-    margin-bottom: 24px;
-}
-
-.footer-navigation ul {
-    list-style: none;
-    display: flex;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.footer-navigation a {
-    text-decoration: none;
-    color: var(--color-primary-text);
-    font-family: var(--font-ui);
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.social-media {
-    display: flex;
-    gap: 20px;
-}
-
-.social-media a {
-    text-decoration: none;
-    color: var(--color-primary-text);
-    font-family: var(--font-ui);
-}
-
-/* ==========================
-   Mobile
-========================== */
-
-@media (max-width: 440px) {
-
-    .site-header,
-    .main-content,
-    .site-footer {
-        padding-left: var(--container-padding-mobile);
-        padding-right: var(--container-padding-mobile);
-    }
-
-    .site-header {
-        height: var(--nav-height-mobile);
-    }
-
-    .main-navigation ul {
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .hero-section h1 {
-        font-size: 48px;
-    }
-
-    .features-section,
-    .gallery-section {
-        grid-template-columns: 1fr;
-    }
-}
+</body>
+</html>
