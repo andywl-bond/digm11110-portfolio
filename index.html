@@ -1,106 +1,331 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BySyuan | Photography Portfolio</title>
-</head>
-<body>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=League+Spartan:wght@400;600;700;800&display=swap');
 
-    <header class="site-header">
-        <nav class="main-navigation" aria-label="Primary Navigation">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#menu">Menu</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+/* ==========================
+   Design Tokens
+========================== */
 
-    <main class="main-content">
+:root {
+    /* Colours */
+    --color-background: #111111;
+    --color-primary-text: #e4f0f6;
+    --color-accent: #ac4606;
+    --color-button-text: #ffffff;
+    --color-card-background: #decfc2;
+    --color-footer-background: #111111;
+    --color-outline-border: #4e535e;
+    --color-divider: rgba(255, 255, 255, 0.06);
 
-        <section class="hero" id="home">
-            <h1>Capturing Timeless Moments with BySyuan</h1>
-            <p>
-                Creative photography that tells stories, preserves memories,
-                and showcases life's most meaningful moments.
-            </p>
-            <a href="#gallery">View Portfolio</a>
-        </section>
+    /* Layout */
+    --container-width: 1440px;
+    --container-padding-desktop: 120px;
+    --container-padding-mobile: 50px;
+    --section-padding: 80px;
+    --card-gap: 48px;
 
-        <section class="features" id="about">
-            <article class="feature-card">
-                <h2>Portrait Photography</h2>
-                <p>
-                    Professional portrait sessions designed to capture personality,
-                    emotion, and authenticity.
-                </p>
-            </article>
+    /* Navigation */
+    --nav-height-desktop: 81px;
+    --nav-height-mobile: 112px;
 
-            <article class="feature-card">
-                <h2>Event Coverage</h2>
-                <p>
-                    Comprehensive photography services for weddings, celebrations,
-                    and special occasions.
-                </p>
-            </article>
+    /* Buttons */
+    --button-radius: 4px;
 
-            <article class="feature-card">
-                <h2>Creative Storytelling</h2>
-                <p>
-                    Artistic imagery crafted to create memorable visual narratives
-                    and lasting impressions.
-                </p>
-            </article>
-        </section>
+    /* Typography */
+    --font-heading: "League Spartan", sans-serif;
+    --font-body: "League Spartan", sans-serif;
+    --font-ui: "Inter", sans-serif;
+}
 
-        <section class="gallery" id="gallery">
-            <figure class="gallery-item">
-                <img src="placeholder-image-1.jpg" alt="Gallery image placeholder">
-            </figure>
+/* ==========================
+   Reset
+========================== */
 
-            <figure class="gallery-item">
-                <img src="placeholder-image-2.jpg" alt="Gallery image placeholder">
-            </figure>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-            <figure class="gallery-item">
-                <img src="placeholder-image-3.jpg" alt="Gallery image placeholder">
-            </figure>
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
 
-            <figure class="gallery-item">
-                <img src="placeholder-image-4.jpg" alt="Gallery image placeholder">
-            </figure>
+body {
+    background-color: var(--color-background);
+    color: var(--color-primary-text);
+    font-family: var(--font-body);
+}
 
-            <figure class="gallery-item">
-                <img src="placeholder-image-5.jpg" alt="Gallery image placeholder">
-            </figure>
+/* ==========================
+   Global Layout
+========================== */
 
-            <figure class="gallery-item">
-                <img src="placeholder-image-6.jpg" alt="Gallery image placeholder">
-            </figure>
-        </section>
+.main-content,
+.site-header,
+.site-footer {
+    width: 100%;
+}
 
-    </main>
+.site-header,
+.main-content,
+.site-footer {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding-left: var(--container-padding-desktop);
+    padding-right: var(--container-padding-desktop);
+}
 
-    <footer class="site-footer">
-        <p>&copy; 2026 BySyuan. All rights reserved.</p>
+/* ==========================
+   Navigation
+========================== */
 
-        <nav class="footer-navigation" aria-label="Footer Navigation">
-            <ul>
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#terms">Terms of Service</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+.site-header {
+    height: var(--nav-height-desktop);
+}
 
-        <div class="social-media">
-            <a href="#" aria-label="Instagram">Instagram</a>
-            <a href="#" aria-label="Facebook">Facebook</a>
-            <a href="#" aria-label="LinkedIn">LinkedIn</a>
-        </div>
-    </footer>
+.main-navigation {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
 
-</body>
-</html>
+.main-navigation ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.main-navigation a,
+.main-navigation li {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--color-primary-text);
+    text-decoration: none;
+}
+
+/* ==========================
+   Sections
+========================== */
+
+.hero-section,
+.features-section,
+.gallery-section {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+}
+
+/* ==========================
+   Hero
+========================== */
+
+.hero-section {
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-family: var(--font-heading);
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.hero-section p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 28px;
+    max-width: 700px;
+    margin: 0 auto 32px;
+}
+
+/* ==========================
+   Buttons
+========================== */
+
+.hero-section a,
+.cta-button {
+    display: inline-block;
+    text-decoration: none;
+    background-color: var(--color-accent);
+    color: var(--color-button-text);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.46px;
+    padding: 8px 16px;
+    border-radius: var(--button-radius);
+}
+
+.contact-button-outline {
+    display: inline-block;
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.46px;
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-outline-border);
+    border-radius: 4px;
+    padding: 15px 50px;
+    background: transparent;
+}
+
+/* ==========================
+   Features Cards
+========================== */
+
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--card-gap);
+}
+
+.feature-card {
+    background-color: var(--color-card-background);
+    padding: 0;
+}
+
+.feature-card h2 {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-background);
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--color-background);
+}
+
+/* ==========================
+   Subheading Style
+========================== */
+
+h3 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* ==========================
+   Gallery
+========================== */
+
+.gallery-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--card-gap);
+}
+
+.gallery-item {
+    background-color: var(--color-card-background);
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==========================
+   FAQ Accordion
+========================== */
+
+.faq-item {
+    border-bottom: 1px solid var(--color-divider);
+}
+
+.faq-question {
+    padding: 20px 15px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.faq-answer {
+    padding: 20px 15px;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+/* ==========================
+   Footer
+========================== */
+
+.site-footer {
+    background-color: var(--color-footer-background);
+    border-top: 1px solid var(--color-divider);
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.site-footer p {
+    margin-bottom: 24px;
+}
+
+.footer-navigation ul {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.footer-navigation a {
+    text-decoration: none;
+    color: var(--color-primary-text);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.social-media {
+    display: flex;
+    gap: 20px;
+}
+
+.social-media a {
+    text-decoration: none;
+    color: var(--color-primary-text);
+    font-family: var(--font-ui);
+}
+
+/* ==========================
+   Mobile
+========================== */
+
+@media (max-width: 440px) {
+
+    .site-header,
+    .main-content,
+    .site-footer {
+        padding-left: var(--container-padding-mobile);
+        padding-right: var(--container-padding-mobile);
+    }
+
+    .site-header {
+        height: var(--nav-height-mobile);
+    }
+
+    .main-navigation ul {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .hero-section h1 {
+        font-size: 48px;
+    }
+
+    .features-section,
+    .gallery-section {
+        grid-template-columns: 1fr;
+    }
+}
