@@ -1,48 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=League+Spartan:wght@400;600;700;800&display=swap');
+/* ==========================================
+   GOOGLE FONTS
+========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=League+Spartan:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap');
 
-/* ==========================
-   Design Tokens
-========================== */
-
+/* ==========================================
+   ROOT VARIABLES
+========================================== */
 :root {
-    /* Colours */
-    --color-background: #111111;
-    --color-primary-text: #e4f0f6;
+    --color-bg: #ffffff;
+    --color-dark: #111111;
+    --color-text: #111111;
+    --color-light: #ffffff;
+    --color-muted: #d9d9d9;
     --color-accent: #ac4606;
-    --color-button-text: #ffffff;
-    --color-card-background: #decfc2;
-    --color-footer-background: #111111;
-    --color-outline-border: #4e535e;
-    --color-divider: rgba(255, 255, 255, 0.06);
+    --color-sand: #decfc2;
+    --color-border: #4e535e;
+    --color-divider: rgba(17, 17, 17, 0.08);
 
-    /* Layout */
     --container-width: 1440px;
-    --container-padding-desktop: 120px;
-    --container-padding-mobile: 50px;
-    --section-padding: 80px;
-    --card-gap: 48px;
+    --container-padding: 120px;
+    --section-spacing: 80px;
+    --grid-gap: 48px;
 
-    /* Navigation */
-    --nav-height-desktop: 81px;
-    --nav-height-mobile: 112px;
+    --radius-sm: 4px;
 
-    /* Buttons */
-    --button-radius: 4px;
+    --font-display: "League Spartan", sans-serif;
+    --font-body: "Inter", sans-serif;
+    --font-meta: "Roboto Mono", monospace;
 
-    /* Typography */
-    --font-heading: "League Spartan", sans-serif;
-    --font-body: "League Spartan", sans-serif;
-    --font-ui: "Inter", sans-serif;
+    --transition: 220ms ease;
 }
 
-/* ==========================
-   Reset
-========================== */
-
-* {
-    margin: 0;
-    padding: 0;
+/* ==========================================
+   RESET
+========================================== */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 img {
@@ -51,281 +59,623 @@ img {
     height: auto;
 }
 
-body {
-    background-color: var(--color-background);
-    color: var(--color-primary-text);
-    font-family: var(--font-body);
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-/* ==========================
-   Global Layout
-========================== */
-
-.main-content,
-.site-header,
-.site-footer {
-    width: 100%;
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.site-header,
-.main-content,
-.site-footer {
+figure,
+p,
+h1,
+h2,
+h3 {
+    margin: 0;
+}
+
+/* ==========================================
+   GLOBAL SECTION LAYOUT
+========================================== */
+section {
+    padding: var(--section-spacing) 0;
+}
+
+.navigation-container,
+.brand-statement-wrapper,
+.about-wrapper,
+.selected-work-wrapper,
+.faq-wrapper,
+.footer-wrapper,
+.collaboration-content-wrapper {
     max-width: var(--container-width);
     margin: 0 auto;
-    padding-left: var(--container-padding-desktop);
-    padding-right: var(--container-padding-desktop);
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
 }
 
-/* ==========================
-   Navigation
-========================== */
+/* ==========================================
+   TYPOGRAPHY
+========================================== */
+h1 {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -1.5px;
+    max-width: 900px;
+}
 
+h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.8px;
+}
+
+h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.section-eyebrow,
+.project-year,
+.project-category {
+    font-family: var(--font-meta);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-text-container p,
+.brand-statement-content p {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.faq-answer p,
+.hero-text-content p,
+.collaboration-content p,
+.footer-tagline {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
 .site-header {
-    height: var(--nav-height-desktop);
+    background: var(--color-dark);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .main-navigation {
-    height: 100%;
-    display: flex;
-    align-items: center;
+    min-height: 81px;
 }
 
-.main-navigation ul {
-    list-style: none;
+.navigation-container {
+    min-height: 81px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand-identity {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-light);
+    font-size: 1.2rem;
+    letter-spacing: 0.2px;
+}
+
+.primary-navigation {
+    display: flex;
+    align-items: center;
     gap: 32px;
 }
 
-.main-navigation a,
-.main-navigation li {
-    font-family: var(--font-heading);
+.primary-navigation a,
+.navigation-item a {
+    font-family: var(--font-display);
     font-size: 14px;
     font-weight: 600;
+    color: var(--color-light);
     letter-spacing: 0.2px;
-    color: var(--color-primary-text);
-    text-decoration: none;
+    transition: color var(--transition);
 }
 
-/* ==========================
-   Sections
-========================== */
-
-.hero-section,
-.features-section,
-.gallery-section {
-    padding-top: var(--section-padding);
-    padding-bottom: var(--section-padding);
+.primary-navigation a:hover,
+.navigation-item a:hover {
+    color: var(--color-accent);
 }
 
-/* ==========================
-   Hero
-========================== */
-
+/* ==========================================
+   HERO
+========================================== */
 .hero-section {
-    text-align: center;
+    padding-top: 0;
+    padding-bottom: 100px;
 }
 
-.hero-section h1 {
-    font-family: var(--font-heading);
-    font-size: 64px;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 24px;
-}
-
-.hero-section p {
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 28px;
-    max-width: 700px;
-    margin: 0 auto 32px;
-}
-
-/* ==========================
-   Buttons
-========================== */
-
-.hero-section a,
-.cta-button {
-    display: inline-block;
-    text-decoration: none;
-    background-color: var(--color-accent);
-    color: var(--color-button-text);
-    font-family: var(--font-ui);
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.46px;
-    padding: 8px 16px;
-    border-radius: var(--button-radius);
-}
-
-.contact-button-outline {
-    display: inline-block;
-    text-decoration: none;
-    font-family: var(--font-ui);
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.46px;
-    color: var(--color-primary-text);
-    border: 1px solid var(--color-outline-border);
-    border-radius: 4px;
-    padding: 15px 50px;
-    background: transparent;
-}
-
-/* ==========================
-   Features Cards
-========================== */
-
-.features-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--card-gap);
-}
-
-.feature-card {
-    background-color: var(--color-card-background);
-    padding: 0;
-}
-
-.feature-card h2 {
-    font-family: var(--font-heading);
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--color-background);
-    margin-bottom: 16px;
-}
-
-.feature-card p {
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 28px;
-    color: var(--color-background);
-}
-
-/* ==========================
-   Subheading Style
-========================== */
-
-h3 {
-    font-family: var(--font-heading);
-    font-size: 22px;
-    font-weight: 600;
-}
-
-/* ==========================
-   Gallery
-========================== */
-
-.gallery-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--card-gap);
-}
-
-.gallery-item {
-    background-color: var(--color-card-background);
+.hero-visual {
+    width: 100%;
+    aspect-ratio: 16 / 8;
     overflow: hidden;
 }
 
-.gallery-item img {
+.hero-visual img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* ==========================
-   FAQ Accordion
-========================== */
-
-.faq-item {
-    border-bottom: 1px solid var(--color-divider);
+.hero-content-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 70px 120px 0;
 }
 
-.faq-question {
-    padding: 20px 15px;
-    cursor: pointer;
-    font-family: var(--font-ui);
-    font-size: 20px;
+.hero-brand-block {
+    margin-bottom: 32px;
+}
+
+.hero-brand-name {
+    font-family: var(--font-meta);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+}
+
+.hero-text-content {
+    max-width: 900px;
+}
+
+.hero-text-content h1 {
+    margin-bottom: 32px;
+}
+
+.hero-text-content .accent,
+.hero-text-content strong {
+    color: var(--color-accent);
+}
+
+.hero-text-content p {
+    max-width: 620px;
+    margin-bottom: 40px;
+    color: rgba(17, 17, 17, 0.85);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 56px;
+}
+
+.hero-actions a:first-child {
+    background: var(--color-accent);
+    color: var(--color-light);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
     font-weight: 500;
 }
 
-.faq-answer {
-    padding: 20px 15px;
-    font-family: var(--font-ui);
-    font-size: 16px;
+.hero-actions a:last-child {
+    border: 1px solid var(--color-border);
+    padding: 15px 50px;
+    border-radius: var(--radius-sm);
+}
+
+.scroll-indicator a {
+    font-family: var(--font-meta);
+    font-size: 13px;
+    color: rgba(17, 17, 17, 0.6);
+}
+
+/* ==========================================
+   BRAND STATEMENT
+========================================== */
+.brand-statement-section {
+    border-top: 1px solid var(--color-divider);
+}
+
+.brand-statement-content {
+    max-width: 900px;
+}
+
+.brand-statement-content h2 {
+    margin-bottom: 24px;
+}
+
+.brand-statement-content p {
+    font-size: 32px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+}
+
+/* ==========================================
+   ABOUT
+========================================== */
+.about-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.about-portrait {
+    overflow: hidden;
+}
+
+.about-portrait img {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.section-eyebrow {
+    color: var(--color-accent);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.about-text-container h2 {
+    margin-bottom: 28px;
+}
+
+.about-text-container p {
+    margin-bottom: 20px;
+}
+
+.about-text-container p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   SELECTED WORK
+========================================== */
+.section-header {
+    margin-bottom: 56px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--grid-gap);
+}
+
+.project-card-half {
+    grid-column: span 6;
+}
+
+.project-card-featured {
+    grid-column: 1 / -1;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-media {
+    overflow: hidden;
+}
+
+.project-figure img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.project-card-featured .project-figure img {
+    aspect-ratio: 16 / 7;
+}
+
+.project-content {
+    background: var(--color-sand);
+    padding: 28px;
+}
+
+.project-meta {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.project-year,
+.project-category {
+    border: 1px solid rgba(17, 17, 17, 0.25);
+    padding: 6px 10px;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.project-content h3 {
+    margin-bottom: 12px;
+}
+
+.project-content p {
+    font-family: var(--font-body);
     line-height: 24px;
 }
 
-/* ==========================
-   Footer
-========================== */
+.project-card:hover img {
+    transform: scale(1.02);
+}
 
-.site-footer {
-    background-color: var(--color-footer-background);
+.project-card img {
+    transition: transform 400ms ease;
+}
+
+/* ==========================================
+   FAQ
+========================================== */
+.faq-section {
     border-top: 1px solid var(--color-divider);
-    padding-top: 40px;
-    padding-bottom: 40px;
 }
 
-.site-footer p {
-    margin-bottom: 24px;
+.faq-header {
+    margin-bottom: 40px;
 }
 
-.footer-navigation ul {
-    list-style: none;
+.faq-list {
     display: flex;
-    gap: 24px;
-    margin-bottom: 24px;
+    flex-direction: column;
 }
 
-.footer-navigation a {
-    text-decoration: none;
-    color: var(--color-primary-text);
-    font-family: var(--font-ui);
-    font-size: 14px;
-    font-weight: 500;
+.faq-item {
+    border-bottom: 1px solid var(--color-divider);
+    padding: 24px 0;
 }
 
-.social-media {
+.faq-question {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.faq-answer {
+    margin-top: 16px;
+    max-width: 700px;
+}
+
+/* ==========================================
+   COLLABORATION CTA
+========================================== */
+.collaboration-section {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.collaboration-visual {
+    position: relative;
+}
+
+.collaboration-visual img {
+    width: 100%;
+    height: 650px;
+    object-fit: cover;
+    filter: brightness(0.45);
+}
+
+.collaboration-content-wrapper {
+    position: absolute;
+    inset: 0;
     display: flex;
-    gap: 20px;
+    align-items: center;
 }
 
-.social-media a {
-    text-decoration: none;
-    color: var(--color-primary-text);
-    font-family: var(--font-ui);
+.collaboration-content {
+    color: var(--color-light);
+    max-width: 700px;
 }
 
-/* ==========================
-   Mobile
-========================== */
+.collaboration-content h2 {
+    margin-bottom: 24px;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+}
 
+.collaboration-content p {
+    margin-bottom: 32px;
+    color: var(--color-muted);
+}
+
+.collaboration-content a {
+    display: inline-block;
+    background: var(--color-accent);
+    color: var(--color-light);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+.site-footer {
+    background: var(--color-dark);
+    color: var(--color-light);
+    padding: 80px 0 32px;
+}
+
+.footer-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+}
+
+.footer-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.footer-tagline {
+    margin-top: 12px;
+    color: var(--color-muted);
+}
+
+.footer-nav-list,
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-navigation a,
+.social-links a {
+    color: var(--color-light);
+}
+
+.footer-bottom {
+    margin-top: 60px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-family: var(--font-meta);
+    font-size: 12px;
+    color: var(--color-muted);
+}
+
+/* ==========================================
+   MOBILE NAV HAMBURGER SUPPORT
+========================================== */
+.nav-toggle {
+    display: none;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+@media (max-width: 1024px) {
+
+    :root {
+        --container-padding: 64px;
+    }
+
+    h1 {
+        font-size: 52px;
+    }
+
+    .about-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card-half {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+@media (max-width: 768px) {
+
+    :root {
+        --container-padding: 50px;
+    }
+
+    .navigation-container {
+        min-height: 112px;
+    }
+
+    .primary-navigation {
+        display: none;
+    }
+
+    .site-header::after {
+        content: "☰";
+        position: absolute;
+        right: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    h1 {
+        font-size: 42px;
+        line-height: 0.95;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .hero-content-wrapper {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    .brand-statement-content p {
+        font-size: 24px;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card,
+    .project-card-half,
+    .project-card-featured {
+        grid-column: auto;
+    }
+
+    .footer-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-actions a:last-child {
+        padding: 15px 32px;
+    }
+
+    .collaboration-visual img {
+        height: 500px;
+    }
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
 @media (max-width: 440px) {
 
-    .site-header,
-    .main-content,
-    .site-footer {
-        padding-left: var(--container-padding-mobile);
-        padding-right: var(--container-padding-mobile);
+    :root {
+        --container-padding: 50px;
     }
 
-    .site-header {
-        height: var(--nav-height-mobile);
+    h1 {
+        font-size: 36px;
     }
 
-    .main-navigation ul {
-        flex-direction: column;
-        gap: 16px;
+    .hero-content-wrapper {
+        padding-top: 50px;
     }
 
-    .hero-section h1 {
-        font-size: 48px;
-    }
-
-    .features-section,
-    .gallery-section {
-        grid-template-columns: 1fr;
+    section {
+        padding-top: 64px;
+        padding-bottom: 64px;
     }
 }
