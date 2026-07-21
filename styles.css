@@ -108,32 +108,16 @@ body {
    Navigation
 ========================== */
 
-.site-header {
-    height: var(--nav-height-desktop);
-}
-
 .main-navigation {
-    height: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.main-navigation ul {
-    list-style: none;
+.nav-links {
     display: flex;
     gap: 32px;
 }
-
-.main-navigation a,
-.main-navigation li {
-    font-family: var(--font-heading);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    color: var(--color-primary-text);
-    text-decoration: none;
-}
-
 /* ==========================
    Sections
 ========================== */
