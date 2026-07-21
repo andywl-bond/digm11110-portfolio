@@ -233,7 +233,7 @@ section {
 }
 
 .hero-section h1 {
-    max-width: 900px;
+    max-width: 1400px;
     margin: 0 auto var(--space-xl);
     font-size: clamp(2.75rem, 5vw, 4.25rem);
     line-height: 0.95;
