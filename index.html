@@ -48,6 +48,9 @@
                     </div>
                 </div>
             </div>
+            <div class="hero-scroll-indicator" aria-hidden="true">
+                <span class="hero-scroll-arrow"></span>
+            </div>
         </section>
 
         
@@ -72,13 +75,93 @@
             </div>
         </section>
 
+        <!-- Brand Statement Section -->
+        <section class="brand-statement-section">
+            <div class="brand-statement-wrapper">
+                <figure class="brand-statement-media">
+                    <video class="brand-statement-video" autoplay muted loop playsinline>
+                        <source src="assets/videos/statement.mp4" type="video/mp4">
+                    </video>
+                </figure>
+                <div class="brand-statement-copy">
+                    <p>I create refined visual content that captures attention while staying true to the people and brands behind it. Each project is approached with care, combining thoughtful direction with natural, engaging storytelling.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Selected Work Section -->
         <section id="selected-work" class="selected-work-section">
             <div class="selected-work-wrapper">
                 <header class="section-heading-block">
                     <h2 class="section-heading">Selected Work</h2>
                 </header>
-                <div class="projects-grid"></div>
+                <div class="projects-grid">
+                    <article class="project-card project-card--portrait">
+                        <figure class="project-card-media">
+                            <img src="assets/images/selectedwork-1.png" alt="McLaren GC campaign">
+                        </figure>
+                        <div class="project-card-copy">
+                            <div class="project-card-labels">
+                                <span class="project-label">2026</span>
+                                <span class="project-label">MCLAREN GC</span>
+                            </div>
+                            <h3>The Future Of Performance</h3>
+                            <p>McLaren Artura campaign photography created for McLaren Gold Coast, produced as a collaborative Instagram post.</p>
+                        </div>
+                    </article>
+                    <article class="project-card project-card--portrait">
+                        <figure class="project-card-media">
+                            <img src="assets/images/selectedwork-2.png" alt="Blurred Precision">
+                        </figure>
+                        <div class="project-card-copy">
+                            <div class="project-card-labels">
+                                <span class="project-label">2025</span>
+                                <span class="project-label">QLD RACETRACK</span>
+                            </div>
+                            <h3>Blurred Precision</h3>
+                            <p>A dynamic photo edit of a client’s A90 Supra, emphasising movement and sleek body lines through motion blur distortion.</p>
+                        </div>
+                    </article>
+                    <article class="project-card project-card--landscape">
+                        <figure class="project-card-media">
+                            <img src="assets/images/selectedwork-3.png" alt="Aston Martin Vanquish">
+                        </figure>
+                        <div class="project-card-copy">
+                            <div class="project-card-labels">
+                                <span class="project-label">2026</span>
+                                <span class="project-label">SKYE DEVELOPMENT</span>
+                            </div>
+                            <h3>Aston Martin Vanquish, The Return Of An Icon.</h3>
+                            <p>The Aston Martin Vanquish was positioned as part of the house staging for a property photo and video shoot, created in collaboration with Amir Prestige for the listing by Skye Development.</p>
+                        </div>
+                    </article>
+                    <article class="project-card project-card--portrait">
+                        <figure class="project-card-media">
+                            <img src="assets/images/selectedwork-4.png" alt="Clarity Meets Craftsmanship">
+                        </figure>
+                        <div class="project-card-copy">
+                            <div class="project-card-labels">
+                                <span class="project-label">2025</span>
+                                <span class="project-label">PRIMARA MED.</span>
+                            </div>
+                            <h3>Clarity Meets Craftsmanship.</h3>
+                            <p>A studio photoshoot for Primara Medical showcasing elevated editorial beauty with a clean colour palette and feel-good lifestyle imagery used across the brand’s social channels.</p>
+                        </div>
+                    </article>
+                    <article class="project-card project-card--portrait">
+                        <figure class="project-card-media">
+                            <img src="assets/images/selectedwork-5.png" alt="A Statement In Every Step">
+                        </figure>
+                        <div class="project-card-copy">
+                            <div class="project-card-labels">
+                                <span class="project-label">2025</span>
+                                <span class="project-label">SAINTE AU</span>
+                            </div>
+                            <h3>A Statement In Every Step.</h3>
+                            <p>A fashion photoshoot for Sainte featuring sharp silhouettes and premium composition to tell the garments’ tactile and refined story.</p>
+                        </div>
+                    </article>
+                </div>
             </div>
         </section>
 
@@ -86,18 +169,45 @@
         <section class="faq-section">
             <div class="faq-wrapper">
                 <h2 class="faq-heading">Q&amp;A</h2>
+
+                <div class="accordion" id="faq-accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-1" id="faq-1-btn">What is your process like?</button>
+                        <div id="faq-1" class="accordion-panel" role="region" aria-labelledby="faq-1-btn">
+                            <p>Every shoot starts with understanding what you want to achieve. From there, I plan the direction including style, location, and overall feel. During the shoot, I guide you so it feels natural. Afterward, I refine and deliver a final set of polished images ready to use.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-2" id="faq-2-btn">I’m not experienced in front of the camera, is that okay?</button>
+                        <div id="faq-2" class="accordion-panel" role="region" aria-labelledby="faq-2-btn">
+                            <p>Absolutely. Most of the people I work with are not professional models. I will guide you throughout the shoot so you feel comfortable and confident, while keeping everything natural and relaxed.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-3" id="faq-3-btn">What types of work do you specialise in?</button>
+                        <div id="faq-3" class="accordion-panel" role="region" aria-labelledby="faq-3-btn">
+                            <p>It depends on the scope, but most projects take anywhere from 2 to 8 weeks. We'll always set clear timelines at the start and keep you updated at every step.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq-4" id="faq-4-btn">How do I book a shoot?</button>
+                        <div id="faq-4" class="accordion-panel" role="region" aria-labelledby="faq-4-btn">
+                            <p>You can get in touch through the emails or message me directly through instagram. From there, we will discuss your idea, lock in a date, and plan the shoot to ensure everything aligns with what you are looking for.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <!-- Collaboration CTA Section -->
         <section id="contact" class="collaboration-section">
-            <figure class="collaboration-background-media">
-                <img src="placeholder-collaboration.jpg" alt="Collaboration background image">
-            </figure>
             <div class="collaboration-content-wrapper">
-                <h2 class="collaboration-heading">Let’s create something memorable together.</h2>
-                <p class="collaboration-supporting-copy">Available for brand campaigns, editorial projects, personal portraits, and creative collaborations.</p>
-                <a href="mailto:hello@example.com" class="collaboration-link">Let's collaborate</a>
+                <h2 class="collaboration-heading">Let’s create something refined.<br>Whether it’s for your brand or personal work, I’m available for select projects.</h2>
+                <a href="mailto:hello@example.com" class="cta-link cta-link--orange">let’s collaborate <span class="cta-btn-arrow">›</span></a>
             </div>
         </section>
 
@@ -106,9 +216,53 @@
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-wrapper">
-            <div class="footer-brand-area"><a href="index.html" class="footer-brand-link">BySyuan</a></div>
+            <div class="footer-left">
+                <a href="index.html" class="footer-brand-link">
+                    <img src="assets/images/logo.png" alt="BySyuan logo" class="footer-logo">
+                </a>
+            </div>
+
+            <div class="footer-center">
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookies</a>
+                </nav>
+            </div>
+
+            <div class="footer-right">
+                <div class="social-media">
+                    <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-btn" aria-label="Facebook">f</a>
+                    <a href="#" class="social-btn" aria-label="Website">↗</a>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <script>
+    // Accessible accordion behaviour for Q&A
+    document.addEventListener('DOMContentLoaded', function () {
+        const accordion = document.getElementById('faq-accordion');
+        if (!accordion) return;
+        accordion.addEventListener('click', (e) => {
+            const btn = e.target.closest('.accordion-trigger');
+            if (!btn) return;
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+        });
+
+        // keyboard support (Enter / Space)
+        accordion.addEventListener('keydown', (e) => {
+            const btn = e.target.closest('.accordion-trigger');
+            if (!btn) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', String(!expanded));
+            }
+        });
+    });
+    </script>
 </body>
 </html>
