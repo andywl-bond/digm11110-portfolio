@@ -116,7 +116,7 @@ p {
 }
 
 section {
-    padding: var(--space-3xl) 0;
+    padding: 80px 0;
 }
 
 /* =====================================
@@ -124,16 +124,24 @@ section {
 ===================================== */
 
 .site-header {
-    background: var(--color-nav-bg);
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
 }
 
 .main-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     max-width: 1440px;
     margin: 0 auto;
-    padding: var(--space-lg) 120px;
+    padding: 16px 120px;
 }
 
-.main-navigation ul {
+.nav-links {
     display: flex;
     align-items: center;
     gap: var(--space-xl);
@@ -143,8 +151,21 @@ section {
 .main-navigation li {
     color: #ffffff;
     font-family: 'League Spartan', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
+}
+
+.brand-logo {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-logo-image {
+    display: block;
+    width: 120px;
+    height: auto;
 }
 
 /* =====================================
@@ -152,33 +173,94 @@ section {
 ===================================== */
 
 .hero-section {
-    padding-top: var(--space-3xl);
-    padding-bottom: var(--space-3xl);
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: calc(var(--space-3xl) * 0.7);
+    padding-bottom: calc(var(--space-3xl) * 0.7);
+    /* remove site side padding so hero is full-bleed */
+    padding-left: 0;
+    padding-right: 0;
+    background: #000;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    box-sizing: border-box;
+}
+
+.hero-video {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 100%);
+    z-index: 1;
+}
+
+.hero-content-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 24px;
+    max-width: 1100px;
+}
+
+.hero-brand-block {
+    margin-bottom: -12px;
+}
+
+.brand-mark-logo {
+    display: block;
+    width: clamp(165px, 26.565vw, 234.465px);
+    height: auto;
+    margin: 0 auto;
+    opacity: 0.95;
 }
 
 .hero-section h1 {
     max-width: 900px;
-    margin-bottom: var(--space-xl);
+    margin: 0 auto var(--space-xl);
+    font-size: clamp(2.75rem, 5vw, 4.25rem);
+    line-height: 0.95;
+    color: #DECFC2;
 }
 
 .hero-section p {
     max-width: 640px;
-    margin-bottom: var(--space-2xl);
-}
-
-.hero-content-container {
-    text-align: center;
-    margin: 0 auto;
+    margin: 0 auto var(--space-2xl);
 }
 
 .hero-heading {
     text-align: center;
     max-width: 1100px;
     margin: 0 auto 24px;
+    white-space: normal;
+}
+
+.hero-heading br {
+    display: block;
+    line-height: 0;
 }
 
 .hero-break {
     display: block;
+    margin-top: 6px;
+    line-height: 1;
 }
 
 .hero-actions {
@@ -193,21 +275,130 @@ section {
     max-width: 700px;
     margin: 0 auto 32px;
     text-align: center;
+    color: rgba(255,255,255,0.9);
+}
+
+/* =====================================
+   ABOUT
+===================================== */
+
+.about-section {
+    padding: var(--space-3xl) 0;
+}
+
+.about-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+.about-media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-photo {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
+}
+
+.about-content-container {
+    color: #ffffff;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.about-heading {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 22px;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.about-paragraph {
+    /* body text uses League Spartan regular at 18px per request */
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 18px;
+    max-width: 520px;
+}
+
+@media (max-width: 900px) {
+    .about-wrapper {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .brand-mark-logo {
+        width: clamp(120px, 28vw, 180px);
+    }
+}
+
+@media (max-width: 900px) {
+    .hero-section {
+        /* match the reduced site padding on small screens */
+        left: -24px;
+        width: calc(100% + 48px);
+    }
+}
+
+/* Site-wide horizontal padding and responsive adjustments */
+.homepage-content {
+    padding: 0 120px;
+}
+
+@media (max-width: 900px) {
+    .homepage-content {
+        padding: 0 24px;
+    }
+    .main-navigation {
+        padding: 12px 24px;
+    }
 }
 
 /* =====================================
    BUTTONS
 ===================================== */
 
-.cta-button,
-.hero-section a {
-    display: inline-block;
+.cta-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    width: 169px;
+    height: 52px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 4px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    text-transform: lowercase;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cta-link--orange {
     background: var(--color-cta);
     color: #ffffff;
-    padding: var(--space-md) var(--space-xl);
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
+}
+
+.cta-link--white {
+    background: #ffffff;
+    color: #4E535E;
+    border: 1px solid #4E535E;
+}
+
+.cta-link:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
 }
 
 /* =====================================
