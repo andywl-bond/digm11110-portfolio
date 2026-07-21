@@ -4,6 +4,34 @@
    Design Tokens
 ========================== */
 
+  @font-face {
+    font-family: 'Mulish';
+    src: url('chrome-extension://jcmcbmdmfmelmlelagelpfhmohipjjia/Mulish.woff2') format('woff2');
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+  }
+        
+  .zyft-extension-root {
+    all: initial;
+    display: block !important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 0;
+    /* highest 32bit value */
+    z-index: 2147483647;
+  }
+
+  .zyft-extension__shadow-root {
+    display: block !important;
+    font-family: 'Mulish', sans-serif !important;
+    line-height: normal;
+    color: #393939;
+    color-scheme: light;
+  }
+
 :root {
     /* Colours */
     --color-background: #111111;
