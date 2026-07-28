@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BySyuan | All Works</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="main-navigation">
+            <a href="index.html" class="brand-logo">
+                <img src="assets/images/logo.png" alt="BySyuan logo" class="nav-logo-image">
+            </a>
+            <button class="hamburger-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="works.html">Works</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="all-works-page">
+        <!-- Page Title Section -->
+        <section class="all-works-header">
+            <div class="all-works-header-wrapper">
+                <h1 class="all-works-title">All Works</h1>
+                <button class="works-scroll-indicator" aria-label="Browse through works" type="button">
+                    <span class="works-scroll-arrow"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Works Grid Section -->
+        <section class="all-works-content">
+            <div class="all-works-wrapper">
+                <div class="works-grid">
+                    <!-- Row 1: 2 items -->
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-1.png" alt="Work 1">
+                        </figure>
+                    </article>
+
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-2.png" alt="Work 2">
+                        </figure>
+                    </article>
+
+                    <!-- Row 2: 1 full-width item -->
+                    <article class="work-item work-item--landscape">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-3.png" alt="Work 3">
+                        </figure>
+                    </article>
+
+                    <!-- Row 3: 2 items -->
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-4.png" alt="Work 4">
+                        </figure>
+                    </article>
+
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-5.png" alt="Work 5">
+                        </figure>
+                    </article>
+
+                    <!-- Row 4: 1 full-width item -->
+                    <article class="work-item work-item--landscape">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-6.png" alt="Work 6">
+                        </figure>
+                    </article>
+
+                    <!-- Row 5: 2 items -->
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-7.png" alt="Work 7">
+                        </figure>
+                    </article>
+
+                    <article class="work-item work-item--portrait">
+                        <figure class="work-item-media">
+                            <img src="assets/images/works-8.png" alt="Work 8">
+                        </figure>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-wrapper">
+            <div class="footer-left">
+                <a href="index.html" class="footer-brand-link">
+                    <img src="assets/images/logo.png" alt="BySyuan logo" class="footer-logo">
+                </a>
+            </div>
+
+            <div class="footer-center">
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookies</a>
+                </nav>
+            </div>
+
+            <div class="footer-right">
+                <div class="social-media">
+                    <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-btn" aria-label="Facebook">f</a>
+                    <a href="#" class="social-btn" aria-label="Website">↗</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainNav = document.querySelector('.main-navigation');
+            const toggle = document.querySelector('.hamburger-toggle');
+
+            if (mainNav && toggle) {
+                toggle.addEventListener('click', function () {
+                    const isOpen = mainNav.classList.toggle('nav-open');
+                    toggle.setAttribute('aria-expanded', String(isOpen));
+                });
+
+                mainNav.querySelectorAll('.nav-links a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        mainNav.classList.remove('nav-open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            // Gallery scroll behavior for works
+            const scrollIndicator = document.querySelector('.works-scroll-indicator');
+            if (scrollIndicator) {
+                let isScrolling = false;
+                let scrollAnimationId = null;
+                
+                scrollIndicator.addEventListener('click', function () {
+                    if (isScrolling) return; // Prevent multiple simultaneous scrolls
+                    
+                    isScrolling = true;
+                    
+                    // Temporarily disable CSS smooth scroll for gallery animation
+                    document.documentElement.style.scrollBehavior = 'auto';
+                    
+                    const startPosition = window.scrollY;
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    const targetPosition = maxScroll;
+                    const scrollDistance = targetPosition - startPosition;
+                    const duration = 7000; // 7 seconds for smooth gallery-like pacing
+                    let start = null;
+                    let userInterrupted = false;
+
+                    function easeInOutCubic(t) {
+                        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                    }
+
+                    // Detect manual scroll from user
+                    const wheelHandler = () => {
+                        userInterrupted = true;
+                    };
+                    
+                    const touchHandler = () => {
+                        userInterrupted = true;
+                    };
+
+                    window.addEventListener('wheel', wheelHandler, { passive: true });
+                    window.addEventListener('touchmove', touchHandler, { passive: true });
+
+                    function scroll(timestamp) {
+                        // Exit if user manually scrolled
+                        if (userInterrupted) {
+                            isScrolling = false;
+                            document.documentElement.style.scrollBehavior = '';
+                            window.removeEventListener('wheel', wheelHandler);
+                            window.removeEventListener('touchmove', touchHandler);
+                            return;
+                        }
+
+                        if (!start) start = timestamp;
+                        const elapsed = timestamp - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const ease = easeInOutCubic(progress);
+                        const newScrollY = startPosition + scrollDistance * ease;
+
+                        window.scrollTo(0, newScrollY);
+
+                        if (progress < 1) {
+                            scrollAnimationId = requestAnimationFrame(scroll);
+                        } else {
+                            // Ensure final position is exact
+                            window.scrollTo(0, targetPosition);
+                            isScrolling = false;
+                            // Re-enable smooth scroll for rest of page
+                            document.documentElement.style.scrollBehavior = '';
+                            window.removeEventListener('wheel', wheelHandler);
+                            window.removeEventListener('touchmove', touchHandler);
+                        }
+                    }
+
+                    scrollAnimationId = requestAnimationFrame(scroll);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

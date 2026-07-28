@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BySyuan | Contact</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="main-navigation">
+            <a href="index.html" class="brand-logo">
+                <img src="assets/images/logo.png" alt="BySyuan logo" class="nav-logo-image">
+            </a>
+            <button class="hamburger-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="works.html">Works</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="contact-page">
+        <section class="contact-section">
+            <div class="contact-heading-block">
+                <h1 class="contact-heading">Contact</h1>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-label">Instagram</span>
+                        <a href="https://instagram.com/bysyuan" class="contact-link" target="_blank" rel="noreferrer">@bysyuan</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Location</span>
+                        <p class="contact-text">Gold Coast</p>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:andywonglin1975@gmail.com" class="contact-link">andywonglin1975@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Available Hours</span>
+                        <p class="contact-text">9:00 AM — 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-image-section">
+            <figure class="contact-image-figure">
+                <img src="assets/images/contact.png" alt="BySyuan contact visual">
+            </figure>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-wrapper">
+            <div class="footer-left">
+                <a href="index.html" class="footer-brand-link">
+                    <img src="assets/images/logo.png" alt="BySyuan logo" class="footer-logo">
+                </a>
+            </div>
+
+            <div class="footer-center">
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookies</a>
+                </nav>
+            </div>
+
+            <div class="footer-right">
+                <div class="social-media">
+                    <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-btn" aria-label="Facebook">f</a>
+                    <a href="#" class="social-btn" aria-label="Website">↗</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.querySelector('.hamburger-toggle');
+            const nav = document.querySelector('.main-navigation');
+            if (!toggle || !nav) return;
+            toggle.addEventListener('click', function () {
+                const isOpen = nav.classList.toggle('nav-open');
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            nav.querySelectorAll('.nav-links a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    nav.classList.remove('nav-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
