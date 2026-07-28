@@ -240,7 +240,16 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     object-fit: cover;
+    object-position: center;
     z-index: 0;
+    background: #000; /* Fallback background while video loads */
+}
+
+/* Mobile video optimization - use dynamic viewport height for URL bar handling */
+@supports (height: 100dvh) {
+    .hero-video {
+        height: 100dvh;
+    }
 }
 
 .hero-overlay {
@@ -427,7 +436,9 @@ a {
     width: 100%;
     height: auto;
     object-fit: cover;
-    min-height: 420px;
+    object-position: center;
+    min-height: 280px;
+    background: #000; /* Fallback background while video loads */
 }
 
 .brand-statement-copy {
