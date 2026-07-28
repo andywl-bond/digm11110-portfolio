@@ -30,8 +30,9 @@
 
         <!-- Hero Section -->
         <section class="hero-section">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source src="assets/videos/hero reel.mp4" type="video/mp4">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/videos/hero-reel.mp4" type="video/mp4; codecs=&quot;avc1.42E01E&quot;">
+                Your browser does not support the video tag.
             </video>
 
             <div class="hero-overlay"></div>
@@ -83,8 +84,9 @@
         <section class="brand-statement-section">
             <div class="brand-statement-wrapper">
                 <figure class="brand-statement-media">
-                    <video class="brand-statement-video" autoplay muted loop playsinline>
-                        <source src="assets/videos/statement.mp4" type="video/mp4">
+                    <video class="brand-statement-video" autoplay muted loop playsinline preload="metadata">
+                        <source src="assets/videos/statement.mp4" type="video/mp4; codecs=&quot;avc1.42E01E&quot;">
+                        Your browser does not support the video tag.
                     </video>
                 </figure>
                 <div class="brand-statement-copy">
@@ -245,8 +247,30 @@
     </footer>
 
     <script>
-    // Accessible accordion behaviour for Q&A
+    // Mobile-safe video error handling
     document.addEventListener('DOMContentLoaded', function () {
+        // Monitor videos for load failures and add fallback styling
+        const videos = document.querySelectorAll('video');
+        videos.forEach((video) => {
+            video.addEventListener('error', function () {
+                console.warn('Video failed to load:', this.src);
+                this.style.backgroundColor = '#000';
+                this.parentElement.style.backgroundColor = '#000';
+            });
+            
+            // Ensure autoplay works on mobile (requires muted + playsinline)
+            video.addEventListener('loadedmetadata', function () {
+                // Force play attempt after metadata loads
+                const playPromise = this.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.warn('Video autoplay failed:', error);
+                    });
+                }
+            });
+        });
+
+        // Accessible accordion behaviour for Q&A
         const accordion = document.getElementById('faq-accordion');
         if (!accordion) return;
         accordion.addEventListener('click', (e) => {
