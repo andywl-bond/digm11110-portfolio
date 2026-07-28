@@ -19,9 +19,9 @@
                 <span></span>
             </button>
             <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#work">Work</a>
-                <a href="#contact">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="works.html">Works</a>
+                <a href="contact.html">Contact</a>
             </div>
         </nav>
     </header>
@@ -47,8 +47,8 @@
                         <span class="hero-break">keeping.</span>
                     </h1>
                     <div class="hero-actions">
-                        <a href="#selected-work" class="cta-link cta-link--orange">Explore</a>
-                        <a href="#contact" class="cta-link cta-link--white">Contact</a>
+                        <a href="#about" class="cta-link cta-link--orange">Explore</a>
+                        <a href="contact.html" class="cta-link cta-link--white">Contact</a>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         
 
         <!-- About Section -->
-        <section class="about-section">
+        <section id="about" class="about-section">
             <div class="about-wrapper">
                 <div class="about-media-container">
                     <figure class="portrait-figure">
@@ -126,7 +126,7 @@
                             <p>A dynamic photo edit of a client’s A90 Supra, emphasising movement and sleek body lines through motion blur distortion.</p>
                         </div>
                     </article>
-                    <article class="project-card project-card--landscape">
+                    <article class="project-card project-card--landscape project-card--landscape-wide">
                         <figure class="project-card-media">
                             <img src="assets/images/selectedwork-3.png" alt="Aston Martin Vanquish">
                         </figure>
@@ -208,10 +208,10 @@
         </section>
 
         <!-- Collaboration CTA Section -->
-        <section id="contact" class="collaboration-section">
+        <section class="collaboration-section">
             <div class="collaboration-content-wrapper">
-                <h2 class="collaboration-heading">Let’s create something refined.<br>Whether it’s for your brand or personal work, I’m available for select projects.</h2>
-                <a href="mailto:hello@example.com" class="cta-link cta-link--orange">let’s collaborate <span class="cta-btn-arrow">›</span></a>
+                <h2 class="collaboration-heading">Let's create something refined.<br>Whether it's for your brand or personal work, I'm available for select projects.</h2>
+                <a href="contact.html" class="cta-link cta-link--orange cta-link--heartbeat">let's collaborate <span class="cta-btn-arrow">›</span></a>
             </div>
         </section>
 
@@ -283,6 +283,150 @@
                 });
             });
         }
+
+        // Heartbeat animation for CTA button when collaboration section is in view
+        const collaborationSection = document.querySelector('.collaboration-section');
+        const ctaButton = document.querySelector('.cta-link--heartbeat');
+
+        if (collaborationSection && ctaButton) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        ctaButton.classList.add('heartbeat-active');
+                    } else {
+                        ctaButton.classList.remove('heartbeat-active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(collaborationSection);
+        }
+
+        // Hero scroll indicator with same smooth behavior as Works page
+        const heroScrollIndicator = document.querySelector('.hero-scroll-indicator');
+        if (heroScrollIndicator) {
+            let isScrolling = false;
+            let scrollAnimationId = null;
+            
+            heroScrollIndicator.addEventListener('click', function () {
+                if (isScrolling) return; // Prevent multiple simultaneous scrolls
+                
+                isScrolling = true;
+                
+                // Temporarily disable CSS smooth scroll for hero animation
+                document.documentElement.style.scrollBehavior = 'auto';
+                
+                const startPosition = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const targetPosition = maxScroll;
+                const scrollDistance = targetPosition - startPosition;
+                const duration = 7000; // 7 seconds for smooth gallery-like pacing
+                let start = null;
+                let userInterrupted = false;
+
+                function easeInOutCubic(t) {
+                    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                }
+
+                // Detect manual scroll from user
+                const wheelHandler = () => {
+                    userInterrupted = true;
+                };
+                
+                const touchHandler = () => {
+                    userInterrupted = true;
+                };
+
+                window.addEventListener('wheel', wheelHandler, { passive: true });
+                window.addEventListener('touchmove', touchHandler, { passive: true });
+
+                function scroll(timestamp) {
+                    // Exit if user manually scrolled
+                    if (userInterrupted) {
+                        isScrolling = false;
+                        document.documentElement.style.scrollBehavior = '';
+                        window.removeEventListener('wheel', wheelHandler);
+                        window.removeEventListener('touchmove', touchHandler);
+                        return;
+                    }
+
+                    if (!start) start = timestamp;
+                    const elapsed = timestamp - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = easeInOutCubic(progress);
+                    const newScrollY = startPosition + scrollDistance * ease;
+
+                    window.scrollTo(0, newScrollY);
+
+                    if (progress < 1) {
+                        scrollAnimationId = requestAnimationFrame(scroll);
+                    } else {
+                        // Ensure final position is exact
+                        window.scrollTo(0, targetPosition);
+                        isScrolling = false;
+                        // Re-enable smooth scroll for rest of page
+                        document.documentElement.style.scrollBehavior = '';
+                        window.removeEventListener('wheel', wheelHandler);
+                        window.removeEventListener('touchmove', touchHandler);
+                    }
+                }
+
+                scrollAnimationId = requestAnimationFrame(scroll);
+            });
+        }
+
+        // Smooth scroll for anchor links with accessibility support
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                const targetId = href.substring(1);
+                const target = document.getElementById(targetId);
+                
+                if (target) {
+                    e.preventDefault();
+                    
+                    if (prefersReducedMotion) {
+                        // Instant scroll for users who prefer reduced motion
+                        target.scrollIntoView();
+                    } else {
+                        // Smooth scroll with easing
+                        const startPosition = window.scrollY;
+                        const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+                        const distance = targetPosition - startPosition;
+                        const duration = 800; // milliseconds
+                        let start = null;
+                        
+                        function easeInOutCubic(t) {
+                            return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+                        }
+                        
+                        function scroll(timestamp) {
+                            if (!start) start = timestamp;
+                            const elapsed = timestamp - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const ease = easeInOutCubic(progress);
+                            
+                            window.scrollTo(0, startPosition + distance * ease);
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(scroll);
+                            } else {
+                                // Ensure final position is exact
+                                window.scrollTo(0, targetPosition);
+                                // Move focus to target for accessibility
+                                target.focus({ preventScroll: true });
+                            }
+                        }
+                        
+                        requestAnimationFrame(scroll);
+                    }
+                }
+            });
+        });
     });
     </script>
 </body>
