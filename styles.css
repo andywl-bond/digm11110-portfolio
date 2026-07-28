@@ -938,3 +938,209 @@ section {
     }
     .footer-center { order: 1; }
 }
+
+@media (max-width: 375px) {
+    .main-navigation {
+        padding: calc(var(--space-md) * 0.75) var(--space-lg);
+        position: relative;
+    }
+
+    .hamburger-toggle {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        width: 34px;
+        height: 34px;
+        background: transparent;
+        border: 0;
+        color: var(--color-text);
+        cursor: pointer;
+        padding: 0;
+        margin-left: auto;
+    }
+
+    .hamburger-toggle span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 1px;
+    }
+
+    .hamburger-toggle span:last-child {
+        margin-top: 0;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+        position: absolute;
+        top: calc(100% + var(--space-sm));
+        left: var(--space-lg);
+        right: var(--space-lg);
+        background: var(--color-nav-bg);
+        padding: var(--space-lg) var(--space-lg) var(--space-xl);
+        z-index: 20;
+    }
+
+    .main-navigation.nav-open .nav-links {
+        display: flex;
+    }
+
+    .main-navigation .nav-links a {
+        font-size: calc(14px * 0.95);
+    }
+
+    .hero-section {
+        padding-top: calc(var(--space-3xl) * 0.5);
+        padding-bottom: calc(var(--space-3xl) * 0.45);
+    }
+
+    .hero-content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 var(--space-lg);
+    }
+
+    .hero-brand-block {
+        margin-bottom: var(--space-md);
+    }
+
+    .brand-mark-logo {
+        width: clamp(120px, 40vw, 165px);
+    }
+
+    .hero-section h1 {
+        font-size: calc(64px * 0.6);
+        margin-bottom: var(--space-lg);
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        gap: var(--space-md);
+        margin-top: var(--space-lg);
+    }
+
+    .hero-scroll-indicator {
+        bottom: calc(var(--space-xl) * 0.85);
+    }
+
+    .homepage-content,
+    .footer-wrapper {
+        padding-left: var(--space-lg);
+        padding-right: var(--space-lg);
+    }
+
+    .about-wrapper {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .about-heading {
+        font-size: calc(22px * 0.9);
+    }
+
+    .about-paragraph {
+        font-size: calc(18px * 0.9);
+        line-height: calc(28px * 0.9);
+    }
+
+    .brand-statement-copy p {
+        font-size: calc(27px * 0.7);
+        line-height: calc(1.2 * 0.95);
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        margin-top: var(--space-lg);
+    }
+
+    .project-card--portrait,
+    .project-card--landscape {
+        grid-column: span 1;
+    }
+
+    .project-card-copy {
+        padding: var(--space-lg);
+    }
+
+    .project-card h3 {
+        font-size: calc(30px * 0.8);
+        margin-bottom: var(--space-md);
+    }
+
+    .project-card p {
+        font-size: calc(16px * 0.9);
+    }
+
+    .project-card-labels {
+        gap: var(--space-sm);
+        margin-bottom: var(--space-md);
+    }
+
+    .project-label {
+        padding: calc(var(--space-sm) * 1.25) var(--space-md);
+        font-size: 11px;
+    }
+
+    .collaboration-content-wrapper {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    .collaboration-heading {
+        font-size: calc(40px * 0.7);
+    }
+
+    .accordion-trigger {
+        padding: calc(var(--space-md) * 1.125) var(--space-lg);
+        font-size: calc(18px * 0.9);
+    }
+
+    .accordion-panel p {
+        font-size: calc(16px * 0.9);
+        margin: var(--space-md) 0 var(--space-lg);
+    }
+
+    .site-footer {
+        padding: var(--space-xl) 0;
+    }
+}
+
+@media (min-width: 376px) and (max-width: 768px) {
+    .main-navigation {
+        padding: var(--space-md) var(--space-xl);
+    }
+
+    .hamburger-toggle {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xl);
+        background: transparent;
+        padding: 0;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-card--portrait,
+    .project-card--landscape {
+        grid-column: span 1;
+    }
+
+    .project-card--landscape {
+        grid-column: span 2;
+    }
+}
