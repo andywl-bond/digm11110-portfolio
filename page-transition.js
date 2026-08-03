@@ -10,6 +10,14 @@
     var isReducedMotion = reducedMotionQuery.matches;
     var isLeaving = false;
 
+    function nextFrame() {
+        return new Promise(function (resolve) {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(resolve);
+            });
+        });
+    }
+
     function createOverlay() {
         var existing = document.querySelector('.page-transition-overlay');
         if (existing) return existing;
@@ -32,6 +40,40 @@
         overlay.classList.remove('is-active');
         overlay.classList.remove('is-revealing');
         overlay.classList.remove('is-fading-out');
+    }
+
+    function ensureLogoReady(overlay) {
+        var logos = overlay.querySelectorAll('.page-transition-logo');
+        var tasks = Array.prototype.map.call(logos, function (logo) {
+            if (logo.complete && logo.naturalWidth > 0) {
+                if (typeof logo.decode === 'function') {
+                    return logo.decode().catch(function () {
+                        return undefined;
+                    });
+                }
+                return Promise.resolve();
+            }
+
+            return new Promise(function (resolve) {
+                var done = false;
+                function finish() {
+                    if (done) return;
+                    done = true;
+                    resolve();
+                }
+                logo.addEventListener('load', finish, { once: true });
+                logo.addEventListener('error', finish, { once: true });
+            }).then(function () {
+                if (typeof logo.decode === 'function') {
+                    return logo.decode().catch(function () {
+                        return undefined;
+                    });
+                }
+                return undefined;
+            });
+        });
+
+        return Promise.all(tasks);
     }
 
     function isSamePageAnchor(url) {
@@ -69,7 +111,7 @@
         return false;
     }
 
-    function revealOnPageLoad() {
+    async function revealOnPageLoad() {
         if (isReducedMotion) {
             sessionStorage.removeItem(TRANSITION_KEY);
             return;
@@ -82,28 +124,47 @@
         sessionStorage.removeItem(TRANSITION_KEY);
 
         var overlay = createOverlay();
+        var fillLayer = overlay.querySelector('.page-transition-logo--fill');
         resetOverlayState(overlay);
         overlay.classList.add('is-active');
+
+        await ensureLogoReady(overlay);
 
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 360ms cubic-bezier(0.16, 1, 0.3, 1)';
 
-        requestAnimationFrame(function () {
-            window.setTimeout(function () {
-                overlay.classList.add('is-revealing');
-            }, OVERLAY_FADE_MS);
-        });
+        // Force style/layout flush so the initial clip-path state is painted before revealing.
+        void overlay.offsetHeight;
+        await nextFrame();
 
-        window.setTimeout(function () {
+        overlay.classList.add('is-revealing');
+
+        function beginFadeOut() {
             overlay.classList.add('is-fading-out');
             document.body.style.opacity = '1';
-        }, OVERLAY_FADE_MS + LOGO_FILL_MS + LOGO_HOLD_MS);
 
-        window.setTimeout(function () {
-            overlay.remove();
-            document.body.style.removeProperty('transition');
-            document.body.style.removeProperty('opacity');
-        }, OVERLAY_FADE_MS + LOGO_FILL_MS + LOGO_HOLD_MS + OVERLAY_OUT_MS);
+            window.setTimeout(function () {
+                overlay.remove();
+                document.body.style.removeProperty('transition');
+                document.body.style.removeProperty('opacity');
+            }, OVERLAY_OUT_MS);
+        }
+
+        if (fillLayer) {
+            var didFadeOut = false;
+            var onFillDone = function () {
+                if (didFadeOut) return;
+                didFadeOut = true;
+                window.setTimeout(beginFadeOut, LOGO_HOLD_MS);
+            };
+
+            fillLayer.addEventListener('animationend', onFillDone, { once: true });
+
+            // Safety timeout in case animationend is missed by the browser.
+            window.setTimeout(onFillDone, LOGO_FILL_MS + 80);
+        } else {
+            window.setTimeout(beginFadeOut, LOGO_FILL_MS + LOGO_HOLD_MS);
+        }
     }
 
     function leavePage(url) {
