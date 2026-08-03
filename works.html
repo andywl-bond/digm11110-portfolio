@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BySyuan | All Works</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="page-transition.js" defer></script>
 </head>
 <body>
     <!-- Header -->
@@ -93,9 +94,42 @@
                         </figure>
                     </article>
                 </div>
+
+                <div class="works-instagram-cta">
+                    <p class="works-instagram-text">Want to see more of my latest work and behind-the-scenes moments? Visit Instagram.</p>
+                    <a href="https://instagram.com/bysyuan" class="works-instagram-link" aria-label="Visit BySyuan on Instagram" target="_blank" rel="noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm11.25 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
+
+    <div class="lightbox" id="works-lightbox" aria-hidden="true" hidden>
+        <div class="lightbox-backdrop" data-lightbox-close></div>
+        <button class="lightbox-close" type="button" aria-label="Close image preview">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <button class="lightbox-nav lightbox-nav--prev" type="button" aria-label="Previous image">
+            <span aria-hidden="true">&#10094;</span>
+        </button>
+        <button class="lightbox-nav lightbox-nav--next" type="button" aria-label="Next image">
+            <span aria-hidden="true">&#10095;</span>
+        </button>
+        <div class="lightbox-stage" role="dialog" aria-modal="true" aria-label="Image preview">
+            <figure class="lightbox-figure">
+                <img class="lightbox-image lightbox-image--primary" alt="">
+                <img class="lightbox-image lightbox-image--secondary" alt="">
+            </figure>
+            <div class="lightbox-loader" aria-hidden="true"></div>
+            <div class="lightbox-caption">
+                <h3 class="lightbox-caption-title"></h3>
+                <p class="lightbox-caption-text"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="site-footer">
@@ -116,9 +150,11 @@
 
             <div class="footer-right">
                 <div class="social-media">
-                    <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
-                    <a href="#" class="social-btn" aria-label="Facebook">f</a>
-                    <a href="#" class="social-btn" aria-label="Website">↗</a>
+                    <a href="https://instagram.com/bysyuan" class="social-btn" aria-label="Instagram" target="_blank" rel="noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm11.25 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -213,6 +249,240 @@
                     }
 
                     scrollAnimationId = requestAnimationFrame(scroll);
+                });
+            }
+
+            // Premium lightbox for works images
+            const lightbox = document.getElementById('works-lightbox');
+            if (lightbox) {
+                const figure = lightbox.querySelector('.lightbox-figure');
+                const closeButton = lightbox.querySelector('.lightbox-close');
+                const prevButton = lightbox.querySelector('.lightbox-nav--prev');
+                const nextButton = lightbox.querySelector('.lightbox-nav--next');
+                const captionTitle = lightbox.querySelector('.lightbox-caption-title');
+                const captionText = lightbox.querySelector('.lightbox-caption-text');
+                const primaryImage = lightbox.querySelector('.lightbox-image--primary');
+                const secondaryImage = lightbox.querySelector('.lightbox-image--secondary');
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const transitionMs = prefersReducedMotion ? 120 : 420;
+
+                const workItems = Array.from(document.querySelectorAll('.works-grid .work-item-media img')).map((img) => {
+                    const card = img.closest('.work-item');
+                    const caption = img.alt ? img.alt.trim() : 'Work';
+                    return {
+                        element: img,
+                        src: img.currentSrc || img.src,
+                        alt: img.alt || 'Work image',
+                        title: caption,
+                        description: card ? card.getAttribute('data-description') || '' : ''
+                    };
+                });
+
+                const state = {
+                    isOpen: false,
+                    activeSlot: 'primary',
+                    activeIndex: 0,
+                    loadingToken: 0,
+                    activeNaturalWidth: 0,
+                    activeNaturalHeight: 0
+                };
+
+                function fitFigureToImage(naturalWidth, naturalHeight) {
+                    if (!figure || !naturalWidth || !naturalHeight) return;
+                    const maxWidth = Math.min(window.innerWidth * 0.94, 1240);
+                    const maxHeight = window.innerHeight * 0.74;
+                    const ratio = naturalWidth / naturalHeight;
+
+                    let fittedWidth = maxWidth;
+                    let fittedHeight = fittedWidth / ratio;
+
+                    if (fittedHeight > maxHeight) {
+                        fittedHeight = maxHeight;
+                        fittedWidth = fittedHeight * ratio;
+                    }
+
+                    figure.style.width = `${Math.max(1, fittedWidth)}px`;
+                    figure.style.height = `${Math.max(1, fittedHeight)}px`;
+                }
+
+                function setCaption(item) {
+                    if (!captionTitle || !captionText) return;
+                    captionTitle.textContent = item.title || '';
+                    captionText.textContent = item.description || '';
+                    captionText.style.display = item.description ? '' : 'none';
+                }
+
+                function clearImageClasses(imageEl) {
+                    imageEl.className = 'lightbox-image';
+                }
+
+                function getSlots() {
+                    const incoming = state.activeSlot === 'primary' ? secondaryImage : primaryImage;
+                    const outgoing = state.activeSlot === 'primary' ? primaryImage : secondaryImage;
+                    return { incoming, outgoing };
+                }
+
+                function preloadAndShow(item, direction, immediate) {
+                    if (!item) return;
+                    state.loadingToken += 1;
+                    const token = state.loadingToken;
+                    lightbox.classList.add('is-loading');
+
+                    const loader = new Image();
+                    loader.onload = function () {
+                        if (token !== state.loadingToken) return;
+
+                        state.activeNaturalWidth = loader.naturalWidth;
+                        state.activeNaturalHeight = loader.naturalHeight;
+                        fitFigureToImage(state.activeNaturalWidth, state.activeNaturalHeight);
+
+                        const slots = getSlots();
+                        const incoming = slots.incoming;
+                        const outgoing = slots.outgoing;
+
+                        incoming.src = item.src;
+                        incoming.alt = item.alt || '';
+                        setCaption(item);
+
+                        clearImageClasses(incoming);
+                        clearImageClasses(outgoing);
+
+                        if (immediate || prefersReducedMotion) {
+                            incoming.classList.add('is-current');
+                            outgoing.classList.remove('is-current');
+                            state.activeSlot = state.activeSlot === 'primary' ? 'secondary' : 'primary';
+                            lightbox.classList.remove('is-loading');
+                            return;
+                        }
+
+                        incoming.classList.add('is-current', direction === 'prev' ? 'is-enter-prev' : 'is-enter-next');
+                        outgoing.classList.add('is-current', direction === 'prev' ? 'is-exit-prev' : 'is-exit-next');
+
+                        requestAnimationFrame(() => {
+                            incoming.classList.add('is-enter-active');
+                            outgoing.classList.add('is-exit-active');
+                        });
+
+                        window.setTimeout(() => {
+                            clearImageClasses(outgoing);
+                            incoming.className = 'lightbox-image is-current';
+                            state.activeSlot = state.activeSlot === 'primary' ? 'secondary' : 'primary';
+                            lightbox.classList.remove('is-loading');
+                        }, transitionMs);
+                    };
+
+                    loader.onerror = function () {
+                        if (token !== state.loadingToken) return;
+                        lightbox.classList.remove('is-loading');
+                    };
+
+                    loader.src = item.src;
+                }
+
+                function showAt(index, direction, immediate) {
+                    if (!workItems.length) return;
+                    const total = workItems.length;
+                    state.activeIndex = (index + total) % total;
+                    preloadAndShow(workItems[state.activeIndex], direction, immediate);
+                }
+
+                function openLightbox(index) {
+                    state.isOpen = true;
+                    lightbox.hidden = false;
+                    lightbox.setAttribute('aria-hidden', 'false');
+                    lightbox.classList.add('is-open');
+                    document.body.classList.add('lightbox-open');
+
+                    clearImageClasses(primaryImage);
+                    clearImageClasses(secondaryImage);
+                    state.activeSlot = 'primary';
+                    showAt(index, 'next', true);
+                }
+
+                function closeLightbox() {
+                    if (!state.isOpen) return;
+                    state.isOpen = false;
+                    lightbox.classList.remove('is-open', 'is-loading');
+                    lightbox.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('lightbox-open');
+
+                    window.setTimeout(() => {
+                        if (state.isOpen) return;
+                        lightbox.hidden = true;
+                        clearImageClasses(primaryImage);
+                        clearImageClasses(secondaryImage);
+                        state.activeNaturalWidth = 0;
+                        state.activeNaturalHeight = 0;
+                        if (figure) {
+                            figure.style.removeProperty('width');
+                            figure.style.removeProperty('height');
+                        }
+                    }, transitionMs);
+                }
+
+                function goNext() {
+                    if (!state.isOpen) return;
+                    showAt(state.activeIndex + 1, 'next', false);
+                }
+
+                function goPrev() {
+                    if (!state.isOpen) return;
+                    showAt(state.activeIndex - 1, 'prev', false);
+                }
+
+                workItems.forEach((item, index) => {
+                    item.element.classList.add('lightbox-target-image');
+                    item.element.setAttribute('role', 'button');
+                    item.element.setAttribute('tabindex', '0');
+                    item.element.setAttribute('aria-label', 'Open work image');
+
+                    item.element.addEventListener('click', () => openLightbox(index));
+                    item.element.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            openLightbox(index);
+                        }
+                    });
+                });
+
+                lightbox.addEventListener('click', (event) => {
+                    if (event.target.closest('[data-lightbox-close]') || event.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+
+                if (closeButton) {
+                    closeButton.addEventListener('click', closeLightbox);
+                }
+
+                if (nextButton) {
+                    nextButton.addEventListener('click', goNext);
+                }
+
+                if (prevButton) {
+                    prevButton.addEventListener('click', goPrev);
+                }
+
+                document.addEventListener('keydown', (event) => {
+                    if (!state.isOpen) return;
+                    if (event.key === 'Escape') {
+                        closeLightbox();
+                        return;
+                    }
+                    if (event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        goNext();
+                    }
+                    if (event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        goPrev();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (!state.isOpen) return;
+                    if (!state.activeNaturalWidth || !state.activeNaturalHeight) return;
+                    fitFigureToImage(state.activeNaturalWidth, state.activeNaturalHeight);
                 });
             }
         });
