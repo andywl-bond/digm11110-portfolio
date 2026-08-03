@@ -10,6 +10,10 @@
     var isReducedMotion = reducedMotionQuery.matches;
     var isLeaving = false;
 
+    function clearPendingClass() {
+        document.documentElement.classList.remove('page-transition-pending');
+    }
+
     function nextFrame() {
         return new Promise(function (resolve) {
             requestAnimationFrame(function () {
@@ -114,10 +118,12 @@
     async function revealOnPageLoad() {
         if (isReducedMotion) {
             sessionStorage.removeItem(TRANSITION_KEY);
+            clearPendingClass();
             return;
         }
 
         if (sessionStorage.getItem(TRANSITION_KEY) !== '1') {
+            clearPendingClass();
             return;
         }
 
@@ -126,12 +132,15 @@
         var overlay = createOverlay();
         var fillLayer = overlay.querySelector('.page-transition-logo--fill');
         resetOverlayState(overlay);
+
+        // Lock overlay to its initial visual state before any animated classes are applied.
+        overlay.style.transition = 'none';
         overlay.classList.add('is-active');
+        void overlay.offsetHeight;
+        overlay.style.removeProperty('transition');
+        clearPendingClass();
 
         await ensureLogoReady(overlay);
-
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 360ms cubic-bezier(0.16, 1, 0.3, 1)';
 
         // Force style/layout flush so the initial clip-path state is painted before revealing.
         void overlay.offsetHeight;
@@ -141,12 +150,10 @@
 
         function beginFadeOut() {
             overlay.classList.add('is-fading-out');
-            document.body.style.opacity = '1';
 
             window.setTimeout(function () {
                 overlay.remove();
-                document.body.style.removeProperty('transition');
-                document.body.style.removeProperty('opacity');
+                clearPendingClass();
             }, OVERLAY_OUT_MS);
         }
 
@@ -174,11 +181,8 @@
         var overlay = createOverlay();
         resetOverlayState(overlay);
 
-        document.body.style.transition = 'opacity 340ms cubic-bezier(0.16, 1, 0.3, 1)';
-
         requestAnimationFrame(function () {
             overlay.classList.add('is-active');
-            document.body.style.opacity = '0';
 
             window.setTimeout(function () {
                 sessionStorage.setItem(TRANSITION_KEY, '1');
@@ -203,8 +207,7 @@
     }
 
     window.addEventListener('pageshow', function () {
-        document.body.style.removeProperty('transition');
-        document.body.style.removeProperty('opacity');
+        clearPendingClass();
         isLeaving = false;
     });
 })();
