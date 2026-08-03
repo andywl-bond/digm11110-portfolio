@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BySyuan | Photography & Videography</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="page-transition.js" defer></script>
 </head>
 <body>
 
@@ -44,7 +45,7 @@
                 <div class="hero-text-content">
                     <h1 class="hero-heading">
                         I turn your ideas into visuals worth<br>
-                        <span class="hero-break">keeping.</span>
+                        <span class="hero-break"><span class="hero-rotator"><span class="hero-rotator-word">keeping.</span></span></span>
                     </h1>
                     <div class="hero-actions">
                         <a href="#about" class="cta-link cta-link--orange">Explore</a>
@@ -217,6 +218,30 @@
 
     </main>
 
+    <div class="lightbox" id="site-lightbox" aria-hidden="true" hidden>
+        <div class="lightbox-backdrop" data-lightbox-close></div>
+        <button class="lightbox-close" type="button" aria-label="Close image preview">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <button class="lightbox-nav lightbox-nav--prev" type="button" aria-label="Previous image">
+            <span aria-hidden="true">&#10094;</span>
+        </button>
+        <button class="lightbox-nav lightbox-nav--next" type="button" aria-label="Next image">
+            <span aria-hidden="true">&#10095;</span>
+        </button>
+        <div class="lightbox-stage" role="dialog" aria-modal="true" aria-label="Image preview">
+            <figure class="lightbox-figure">
+                <img class="lightbox-image lightbox-image--primary" alt="">
+                <img class="lightbox-image lightbox-image--secondary" alt="">
+            </figure>
+            <div class="lightbox-loader" aria-hidden="true"></div>
+            <div class="lightbox-caption">
+                <h3 class="lightbox-caption-title"></h3>
+                <p class="lightbox-caption-text"></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-wrapper">
@@ -236,9 +261,11 @@
 
             <div class="footer-right">
                 <div class="social-media">
-                    <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
-                    <a href="#" class="social-btn" aria-label="Facebook">f</a>
-                    <a href="#" class="social-btn" aria-label="Website">↗</a>
+                    <a href="https://instagram.com/bysyuan" class="social-btn" aria-label="Instagram" target="_blank" rel="noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm11.25 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -282,6 +309,350 @@
                     toggle.setAttribute('aria-expanded', 'false');
                 });
             });
+        }
+
+        // Editorial lightbox for About + Selected Work images
+        const lightbox = document.getElementById('site-lightbox');
+        if (lightbox) {
+            const stage = lightbox.querySelector('.lightbox-stage');
+            const figure = lightbox.querySelector('.lightbox-figure');
+            const closeButton = lightbox.querySelector('.lightbox-close');
+            const prevButton = lightbox.querySelector('.lightbox-nav--prev');
+            const nextButton = lightbox.querySelector('.lightbox-nav--next');
+            const captionTitle = lightbox.querySelector('.lightbox-caption-title');
+            const captionText = lightbox.querySelector('.lightbox-caption-text');
+            const primaryImage = lightbox.querySelector('.lightbox-image--primary');
+            const secondaryImage = lightbox.querySelector('.lightbox-image--secondary');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const transitionMs = prefersReducedMotion ? 120 : 420;
+
+            const selectedWorkItems = Array.from(document.querySelectorAll('.project-card .project-card-media img')).map((img) => {
+                const card = img.closest('.project-card');
+                const title = card ? card.querySelector('h3') : null;
+                const description = card ? card.querySelector('p') : null;
+                return {
+                    element: img,
+                    src: img.currentSrc || img.src,
+                    alt: img.alt || 'Selected work image',
+                    title: title ? title.textContent.trim() : 'Selected Work',
+                    description: description ? description.textContent.trim() : ''
+                };
+            });
+
+            const aboutImage = document.querySelector('.about-photo');
+            const aboutItem = aboutImage
+                ? {
+                    element: aboutImage,
+                    src: aboutImage.currentSrc || aboutImage.src,
+                    alt: aboutImage.alt || 'About image',
+                    title: 'About',
+                    description: "A portrait from the About section."
+                }
+                : null;
+
+            const state = {
+                isOpen: false,
+                activeSlot: 'primary',
+                activeIndex: 0,
+                activeGroup: null,
+                loadingToken: 0,
+                activeNaturalWidth: 0,
+                activeNaturalHeight: 0
+            };
+
+            function fitFigureToImage(naturalWidth, naturalHeight) {
+                if (!figure || !naturalWidth || !naturalHeight) return;
+                const maxWidth = Math.min(window.innerWidth * 0.94, 1240);
+                const maxHeight = window.innerHeight * 0.74;
+                const ratio = naturalWidth / naturalHeight;
+
+                let fittedWidth = maxWidth;
+                let fittedHeight = fittedWidth / ratio;
+
+                if (fittedHeight > maxHeight) {
+                    fittedHeight = maxHeight;
+                    fittedWidth = fittedHeight * ratio;
+                }
+
+                figure.style.width = `${Math.max(1, fittedWidth)}px`;
+                figure.style.height = `${Math.max(1, fittedHeight)}px`;
+            }
+
+            function setCaption(item) {
+                if (!captionTitle || !captionText) return;
+                captionTitle.textContent = item.title || '';
+                captionText.textContent = item.description || '';
+                captionText.style.display = item.description ? '' : 'none';
+            }
+
+            function clearImageClasses(imageEl) {
+                imageEl.className = 'lightbox-image';
+            }
+
+            function getSlots() {
+                const incoming = state.activeSlot === 'primary' ? secondaryImage : primaryImage;
+                const outgoing = state.activeSlot === 'primary' ? primaryImage : secondaryImage;
+                return { incoming, outgoing };
+            }
+
+            function applyNavVisibility() {
+                const showNav = state.activeGroup === 'selected' && selectedWorkItems.length > 1;
+                if (prevButton) prevButton.hidden = !showNav;
+                if (nextButton) nextButton.hidden = !showNav;
+            }
+
+            function preloadAndShow(item, direction, immediate) {
+                if (!item) return;
+                state.loadingToken += 1;
+                const token = state.loadingToken;
+                lightbox.classList.add('is-loading');
+
+                const loader = new Image();
+                loader.onload = function () {
+                    if (token !== state.loadingToken) return;
+
+                    state.activeNaturalWidth = loader.naturalWidth;
+                    state.activeNaturalHeight = loader.naturalHeight;
+                    fitFigureToImage(state.activeNaturalWidth, state.activeNaturalHeight);
+
+                    const slots = getSlots();
+                    const incoming = slots.incoming;
+                    const outgoing = slots.outgoing;
+
+                    incoming.src = item.src;
+                    incoming.alt = item.alt || '';
+                    setCaption(item);
+
+                    clearImageClasses(incoming);
+                    clearImageClasses(outgoing);
+
+                    if (immediate || prefersReducedMotion) {
+                        incoming.classList.add('is-current');
+                        outgoing.classList.remove('is-current');
+                        state.activeSlot = state.activeSlot === 'primary' ? 'secondary' : 'primary';
+                        lightbox.classList.remove('is-loading');
+                        return;
+                    }
+
+                    incoming.classList.add('is-current', direction === 'prev' ? 'is-enter-prev' : 'is-enter-next');
+                    outgoing.classList.add('is-current', direction === 'prev' ? 'is-exit-prev' : 'is-exit-next');
+
+                    requestAnimationFrame(() => {
+                        incoming.classList.add('is-enter-active');
+                        outgoing.classList.add('is-exit-active');
+                    });
+
+                    window.setTimeout(() => {
+                        clearImageClasses(outgoing);
+                        incoming.className = 'lightbox-image is-current';
+                        state.activeSlot = state.activeSlot === 'primary' ? 'secondary' : 'primary';
+                        lightbox.classList.remove('is-loading');
+                    }, transitionMs);
+                };
+
+                loader.onerror = function () {
+                    if (token !== state.loadingToken) return;
+                    lightbox.classList.remove('is-loading');
+                };
+
+                loader.src = item.src;
+            }
+
+            function getCurrentSelectedItem() {
+                return selectedWorkItems[state.activeIndex] || null;
+            }
+
+            function showSelectedAt(index, direction, immediate) {
+                if (!selectedWorkItems.length) return;
+                const total = selectedWorkItems.length;
+                state.activeIndex = (index + total) % total;
+                const item = getCurrentSelectedItem();
+                preloadAndShow(item, direction, immediate);
+            }
+
+            function openLightbox(group, index) {
+                state.isOpen = true;
+                state.activeGroup = group;
+                applyNavVisibility();
+
+                lightbox.hidden = false;
+                lightbox.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('lightbox-open');
+
+                clearImageClasses(primaryImage);
+                clearImageClasses(secondaryImage);
+                state.activeSlot = 'primary';
+
+                if (group === 'selected') {
+                    showSelectedAt(index, 'next', true);
+                } else if (aboutItem) {
+                    preloadAndShow(aboutItem, 'next', true);
+                }
+
+                requestAnimationFrame(() => {
+                    lightbox.classList.add('is-open');
+                });
+            }
+
+            function closeLightbox() {
+                if (!state.isOpen) return;
+                state.isOpen = false;
+                lightbox.classList.remove('is-open', 'is-loading');
+                lightbox.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('lightbox-open');
+
+                window.setTimeout(() => {
+                    if (state.isOpen) return;
+                    lightbox.hidden = true;
+                    clearImageClasses(primaryImage);
+                    clearImageClasses(secondaryImage);
+                    state.activeGroup = null;
+                    state.activeNaturalWidth = 0;
+                    state.activeNaturalHeight = 0;
+                    if (figure) {
+                        figure.style.removeProperty('width');
+                        figure.style.removeProperty('height');
+                    }
+                }, transitionMs);
+            }
+
+            function goNext() {
+                if (!state.isOpen || state.activeGroup !== 'selected') return;
+                showSelectedAt(state.activeIndex + 1, 'next', false);
+            }
+
+            function goPrev() {
+                if (!state.isOpen || state.activeGroup !== 'selected') return;
+                showSelectedAt(state.activeIndex - 1, 'prev', false);
+            }
+
+            selectedWorkItems.forEach((item, index) => {
+                item.element.classList.add('lightbox-target-image');
+                item.element.setAttribute('role', 'button');
+                item.element.setAttribute('tabindex', '0');
+                item.element.setAttribute('aria-label', 'Open selected work image');
+
+                item.element.addEventListener('click', () => openLightbox('selected', index));
+                item.element.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openLightbox('selected', index);
+                    }
+                });
+            });
+
+            if (aboutItem) {
+                aboutItem.element.classList.add('lightbox-target-image');
+                aboutItem.element.setAttribute('role', 'button');
+                aboutItem.element.setAttribute('tabindex', '0');
+                aboutItem.element.setAttribute('aria-label', 'Open about image');
+
+                aboutItem.element.addEventListener('click', () => openLightbox('about', 0));
+                aboutItem.element.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openLightbox('about', 0);
+                    }
+                });
+            }
+
+            lightbox.addEventListener('click', (event) => {
+                if (event.target.closest('[data-lightbox-close]') || event.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeLightbox);
+            }
+
+            if (nextButton) {
+                nextButton.addEventListener('click', goNext);
+            }
+
+            if (prevButton) {
+                prevButton.addEventListener('click', goPrev);
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (!state.isOpen) return;
+                if (event.key === 'Escape') {
+                    closeLightbox();
+                    return;
+                }
+                if (state.activeGroup !== 'selected') return;
+                if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    goNext();
+                }
+                if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    goPrev();
+                }
+            });
+
+            if (stage) {
+                stage.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                });
+            }
+
+            window.addEventListener('resize', () => {
+                if (!state.isOpen) return;
+                if (!state.activeNaturalWidth || !state.activeNaturalHeight) return;
+                fitFigureToImage(state.activeNaturalWidth, state.activeNaturalHeight);
+            });
+        }
+
+        // Hero heading rotating word (slot-machine style vertical transition)
+        const heroRotator = document.querySelector('.hero-rotator');
+        if (heroRotator) {
+            const words = [
+                { text: 'keeping.', color: 'var(--color-cta)', duration: 2000 },
+                { text: 'sharing.', color: 'var(--color-hero-navy)', duration: 2000 },
+                { text: 'feeling.', color: 'var(--color-hero-pink)', duration: 2000 },
+                { text: 'framing.', color: 'var(--color-hero-coral)', duration: 2000 },
+                { text: 'everything.', color: 'var(--color-hero-gold)', duration: 5000 }
+            ];
+
+            let currentIndex = 0;
+            let activeWord = heroRotator.querySelector('.hero-rotator-word');
+
+            if (activeWord) {
+                activeWord.textContent = words[currentIndex].text;
+                activeWord.style.color = words[currentIndex].color;
+            }
+
+            const transitionDurationMs = 500;
+
+            function cycleWord() {
+                const nextIndex = (currentIndex + 1) % words.length;
+                const nextWordConfig = words[nextIndex];
+
+                const nextWord = document.createElement('span');
+                nextWord.className = 'hero-rotator-word is-entering';
+                nextWord.textContent = nextWordConfig.text;
+                nextWord.style.color = nextWordConfig.color;
+                heroRotator.appendChild(nextWord);
+
+                requestAnimationFrame(() => {
+                    if (!activeWord) return;
+                    activeWord.classList.add('is-exiting');
+                    nextWord.classList.add('is-active');
+                    nextWord.classList.remove('is-entering');
+                });
+
+                window.setTimeout(() => {
+                    if (activeWord && activeWord.parentElement === heroRotator) {
+                        heroRotator.removeChild(activeWord);
+                    }
+                    activeWord = nextWord;
+                    currentIndex = nextIndex;
+                    window.setTimeout(cycleWord, words[currentIndex].duration);
+                }, transitionDurationMs);
+            }
+
+            window.setTimeout(cycleWord, words[currentIndex].duration);
         }
 
         // Heartbeat animation for CTA button when collaboration section is in view
